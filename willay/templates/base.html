@@ -1,4 +1,4 @@
-{% load staticfiles i18n %}
+{% load staticfiles i18n socialaccount %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -29,11 +29,24 @@
           </li>
         </ul>
         <ul class="navbar-nav float-lg-right">
+          {% if not user.is_authenticated %}
           <li class="nav-item active">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{% provider_login_url "twitter" %}">
               <i class="fas fa-sign-in-alt"></i> {% trans 'Login' %}
             </a>
           </li>
+          {% else %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ user.username }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{% url 'auth:logout' %}">
+                <i class="fas fa-log-out-alt"></i> {% trans 'Logout' %}
+              </a>
+            </div>
+          </li>
+          {% endif %}
         </ul>
       </div>
     </nav>

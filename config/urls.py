@@ -22,6 +22,7 @@ admin.site.site_header = 'Willay'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
     path('', include('willay.users.urls', namespace='auth')),
     path('', TemplateView.as_view(template_name='home.html')),
 ]

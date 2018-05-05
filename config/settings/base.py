@@ -43,10 +43,15 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'django.contrib.sites',
 ]
 
 THIRD_PARTY_APPS = [
     'crispy_forms',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.twitter',
 ]
 
 LOCAL_APPS = [
@@ -175,3 +180,10 @@ MESSAGE_TAGS = {
 }
 
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
