@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load i18n form_tags %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6">
+            {% field form.category %}
+            {% field form.address %}
+            {% field form.point %}
+          </div>
+          <div class="col-md-6">
+            {% field form.description %}
+            {% field form.photo %}
+          </div>
+        </div>
+        <button class="btn btn-outline-primary" type="submit">
+          <i class="fas fa-save"></i>
+          {% trans 'Save' %}
+        </button>
+        <a class="btn btn-outline-secondary" href="{% url 'claims:claim-list' %}">
+          {% trans 'Cancel' %}
+        </a>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

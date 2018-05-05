@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-9">
+      {% for claim in claims %}
+      <div class="row">
+        <div class="col-md-3">
+          {% if claim.photo.name %}
+          <img src="{{ claim.photo.url }}" alt="" width="100%" />
+          {% else %}
+          <!--TODO: put a default image-->
+          {% endif %}
+        </div>
+        <div class="col-md-9">
+          <h3 class="card-title">{{ claim.category.name }}</h3>
+          <p>
+            {{ claim.address }} <i class="float-right">{{ claim.date }}</i>
+          </p>
+          {% if claim.user %}
+          <p>
+            {% trans 'By' %} <i>{{ claim.user.username }}</i>
+          </p>
+          {% endif %}
+          <p>
+            {{ claim.description }}
+          </p>
+          <a href="{% url 'claims:claim-detail' claim.id %}" class="btn btn-outline-primary">
+            <i class="fas fa-plus"></i>
+            {% trans 'More info' %}
+          </a>
+        </div>
+      </div>
+      <br/>
+      {% endfor %}
+    </div>
+    <div class="col-md-3">
+      <a class="btn btn-sm btn-block btn-outline-success" href="{% url 'claims:claim-create' %}">
+        <i class="fas fa-plus"></i>
+        {% trans 'New claim' %}
+      </a>
+      <hr/>
+      <div class="list-group">
+        <a href="?" class="list-group-item list-group-item-action {% if not request.GET.category %}active{% endif %}">
+          {% trans 'All categories' %}
+        </a>
+        {% for category in categories %}
+        <a href="?category={{ category.id }}" class="list-group-item list-group-item-action {% if request.GET.category == category.id|stringformat:'s' %}active{% endif %}">
+          {{ category.name }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-md-12">
+      {% include '_pagination.html' %}
+    </div>
+  </div>
+{% endblock content %}

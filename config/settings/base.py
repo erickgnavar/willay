@@ -57,6 +57,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'willay.common',
     'willay.users',
+    'willay.claims',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
