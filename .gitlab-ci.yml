@@ -1,0 +1,36 @@
+image: python:3.6
+
+services:
+  - name: mdillon/postgis:10-alpine
+    alias: postgres
+
+variables:
+  POSTGRES_DBNAME: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  DJANGO_SETTINGS_MODULE: config.settings.test
+  SECRET_KEY: secret
+  DB_HOST: postgres
+  DB_NAME: postgres
+  DB_USER: postgres
+  DB_PASSWORD: postgres
+
+stages:
+  - lint
+  - test
+
+before_script:
+  - pip install -r requirements/test.txt
+
+lint_python:
+  stage: lint
+  script:
+    - make lint
+
+
+test:
+  stage: test
+  script:
+    - apt-get update && apt-get install binutils libproj-dev gdal-bin -y
+    - pip install pytest-django pytest-coverage
+    - pytest --cov
