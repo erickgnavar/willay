@@ -32,6 +32,11 @@
           </li>
         </ul>
         <ul class="navbar-nav float-lg-right">
+          <li>
+            <a class="nav-link" href="https://github.com/erickgnavar/willay">
+              <i class="fab fa-github"></i> {% trans 'Code' %}
+            </a>
+          </li>
           {% if not user.is_authenticated %}
           <li class="nav-item active">
             <a class="nav-link" href="{% provider_login_url "twitter" %}">
