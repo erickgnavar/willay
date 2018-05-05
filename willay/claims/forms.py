@@ -11,6 +11,9 @@ class ClaimForm(forms.ModelForm):
             'category', 'address', 'point',
             'description', 'photo',
         )
+        widgets = {
+            'point': forms.HiddenInput,
+        }
 
     def __init__(self, request, *args, **kwargs):
         super().__init__(*args, **kwargs)

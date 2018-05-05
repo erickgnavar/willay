@@ -9,9 +9,11 @@ $(document).ready(function () {
   $.getJSON('/map/data/', function (response) {
     function onEachFeature(feature, layer) {
       var template = '<a href="#url">#name</a>';
+      template += '<p>#address</p>';
       template += '<p>#content</p>';
       var compiled = template.replace('#url', feature.properties.url);
       compiled = compiled.replace('#name', feature.properties.category_name);
+      compiled = compiled.replace('#address', feature.properties.address);
       compiled = compiled.replace('#content', feature.properties.description);
       layer.bindPopup(compiled);
     }
