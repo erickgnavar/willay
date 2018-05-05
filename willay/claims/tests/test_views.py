@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.test import RequestFactory, TestCase
@@ -105,3 +107,38 @@ class ClaimDetailViewTestCase(TestCase):
         response = self.view(request, id=self.claim.id)
         self.assertEqual(response.status_code, 200)
         self.assertIn('claim', response.context_data)
+
+
+class MapViewTestCase(TestCase):
+
+    def setUp(self):
+        self.view = views.MapView.as_view()
+        self.factory = RequestFactory()
+
+    def test_match_expected_view(self):
+        url = resolve('/map/')
+        self.assertEqual(url.func.__name__, self.view.__name__)
+
+    def test_load_sucessful(self):
+        request = self.factory.get('/')
+        response = self.view(request)
+        self.assertEqual(response.status_code, 200)
+
+
+class MapDataViewTestCase(TestCase):
+
+    def setUp(self):
+        self.view = views.MapDataView.as_view()
+        self.factory = RequestFactory()
+        mixer.cycle(5).blend('claims.Claim', point='POINT(1 1)')
+
+    def test_match_expected_view(self):
+        url = resolve('/map/data/')
+        self.assertEqual(url.func.__name__, self.view.__name__)
+
+    def test_load_sucessful(self):
+        request = self.factory.get('/')
+        response = self.view(request)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(len(data['features']), 5)

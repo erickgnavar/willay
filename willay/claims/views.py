@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.contrib import messages
+from django.core.serializers import serialize
+from django.http import HttpResponse
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, TemplateView, View
 from django_filters.views import FilterView
 
 from . import filters
@@ -50,3 +52,19 @@ class ClaimDetailView(DetailView):
     model = Claim
     context_object_name = 'claim'
     pk_url_kwarg = 'id'
+
+
+class MapView(TemplateView):
+
+    template_name = 'claims/map.html'
+
+
+class MapDataView(View):
+
+    def get(self, request, *args, **kwargs):
+        qs = Claim.objects.exclude(point=None)
+        data = serialize(
+            'claim-geojson', qs, geometry_field='point',
+            fields=('address', 'description', 'date',),
+        )
+        return HttpResponse(data, content_type='application/json')

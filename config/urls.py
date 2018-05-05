@@ -14,8 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import include, path
-from django.views.generic import TemplateView
 
 admin.site.site_title = 'Willay'
 admin.site.site_header = 'Willay'
@@ -25,5 +25,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('', include('willay.users.urls', namespace='auth')),
     path('', include('willay.claims.urls', namespace='claims')),
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('', lambda req: redirect('claims:claim-map'), name='home'),
 ]
