@@ -39,6 +39,7 @@ class Claim(TimeStampedModel, models.Model):
         null=True,
         blank=True,
     )
+    verified = models.BooleanField(_('Verified'), default=False)
 
     class Meta:
         verbose_name = _('Claim')

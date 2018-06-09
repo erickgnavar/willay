@@ -15,4 +15,4 @@ class ClaimAdmin(admin.OSMGeoAdmin):
 
     list_display = ('address', 'date', 'category',)
     search_fields = ('address',)
-    list_filter = ('category',)
+    list_filter = ('category', 'verified',)

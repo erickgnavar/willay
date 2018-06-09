@@ -13,6 +13,18 @@
   <div class="row">
     <div class="col-md-9">
       <h3>{{ claim.category.name }}</h3>
+      <p class="float-right">
+        {% if claim.verified %}
+          <span class="badge badge-primary">
+            <i class="fas fa-check-circle"></i>
+            {% trans 'Verified' %}
+          </span>
+        {% else %}
+          <span class="badge badge-danger">
+            {% trans 'No verified' %}
+          </span>
+        {% endif %}
+      </p>
       <p>
         <b>{% trans 'Date' %}:</b> {{ claim.date }}
       </p>

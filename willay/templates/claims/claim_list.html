@@ -17,6 +17,18 @@
           <p>
             {{ claim.address }} <i class="float-right">{{ claim.date }}</i>
           </p>
+          <p class="float-right">
+            {% if claim.verified %}
+              <span class="badge badge-primary">
+                <i class="fas fa-check-circle"></i>
+                {% trans 'Verified' %}
+              </span>
+            {% else %}
+              <span class="badge badge-danger">
+                {% trans 'No verified' %}
+              </span>
+            {% endif %}
+          </p>
           {% if claim.user %}
           <p>
             {% trans 'By' %} <i>{{ claim.user.username }}</i>
