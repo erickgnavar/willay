@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load i18n static form_tags %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <form method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6">
+            {% field form.category %}
+            {% field form.start_date %}
+            {% field form.end_date %}
+          </div>
+        </div>
+        <br/>
+        <button class="btn btn-outline-primary" type="submit">
+          <i class="fas fa-table"></i>
+          {% trans 'Export' %}
+        </button>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

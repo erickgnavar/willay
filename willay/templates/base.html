@@ -33,6 +33,11 @@
         </ul>
         <ul class="navbar-nav float-lg-right">
           <li>
+            <a class="nav-link" href="{% url 'claims:claim-export' %}">
+              <i class="fas fa-table"></i> {% trans 'Export' %}
+            </a>
+          </li>
+          <li>
             <a class="nav-link" href="https://github.com/erickgnavar/willay">
               <i class="fab fa-github"></i> {% trans 'Code' %}
             </a>

@@ -1,14 +1,17 @@
+import csv
+from io import StringIO
+
 from django.conf import settings
 from django.contrib import messages
 from django.core.serializers import serialize
 from django.http import HttpResponse
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-from django.views.generic import CreateView, DetailView, TemplateView, View
+from django.views.generic import (CreateView, DetailView, FormView,
+                                  TemplateView, View)
 from django_filters.views import FilterView
 
-from . import filters
-from .forms import ClaimForm
+from . import filters, forms
 from .models import Category, Claim
 
 
@@ -16,7 +19,7 @@ class ClaimCreateView(CreateView):
 
     template_name = 'claims/claim_create.html'
     model = Claim
-    form_class = ClaimForm
+    form_class = forms.ClaimForm
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -68,3 +71,36 @@ class MapDataView(View):
             fields=('address', 'description', 'date',),
         )
         return HttpResponse(data, content_type='application/json')
+
+
+class ClaimExportView(FormView):
+
+    template_name = 'claims/export.html'
+    form_class = forms.ExportClaimsForm
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        fields = (
+            'category__name', 'address', 'point', 'date', 'description', 'verified',
+        )
+
+        stream = StringIO()
+        writer = csv.writer(stream, delimiter=',')
+        writer.writerow(fields)
+        qs = Claim.objects.filter().select_related('category')
+        if data['category']:
+            qs = qs.filter(category=data['category'])
+        qs = qs.filter(
+            date__gte=data['start_date'],
+            date__lte=data['end_date'],
+        )
+
+        for record in qs.values_list(*fields):
+            writer.writerow(record)
+        stream.seek(0)
+        start_formatted = data['start_date'].strftime('%Y-%m-%d')
+        end_formatted = data['end_date'].strftime('%Y-%m-%d')
+        filename = f'{start_formatted}_{end_formatted}.csv'
+        response = HttpResponse(stream.getvalue(), content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename={filename}'
+        return response

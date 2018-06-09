@@ -1,5 +1,6 @@
 import json
 
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.test import RequestFactory, TestCase
@@ -7,6 +8,7 @@ from django.urls import resolve, reverse
 from mixer.backend.django import mixer
 
 from .. import views
+from ..models import Claim
 
 
 class ClaimCreateViewTestCase(TestCase):
@@ -142,3 +144,33 @@ class MapDataViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content.decode('utf-8'))
         self.assertEqual(len(data['features']), 5)
+
+
+class ClaimExportViewTestCase(TestCase):
+
+    def setUp(self):
+        self.view = views.ClaimExportView.as_view()
+        self.factory = RequestFactory()
+
+    def test_match_expected_view(self):
+        url = resolve('/claims/export/')
+        self.assertEqual(url.func.__name__, self.view.__name__)
+
+    def test_load_sucessful(self):
+        request = self.factory.get('/')
+        response = self.view(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_export(self):
+        mixer.cycle(5).blend('claims.Claim', description='')
+        start_date = Claim.objects.order_by('date').first().date - relativedelta(days=1)
+        end_date = Claim.objects.order_by('-date').first().date + relativedelta(days=1)
+        request = self.factory.post('/', {
+            'category': '',
+            'start_date': start_date.date().isoformat(),
+            'end_date': end_date.date().isoformat(),
+        })
+        response = self.view(request)
+        self.assertEqual(response.status_code, 200)
+        lines = response.content.decode('utf8').split('\n')
+        self.assertEqual(len(lines), 7)  # headers and one blank line
