@@ -2,6 +2,8 @@
 {% load static %}
 {% block css %}
   <link href="{% static 'vendor/leaflet/leaflet.css' %}" rel="stylesheet"/>
+  <link href="{% static 'vendor/css/leaflet-markercluster.css' %}" rel="stylesheet"/>
+  <link href="{% static 'vendor/css/leaflet-markercluster-default.css' %}" rel="stylesheet"/>
   <style>
     #map {
       width: 100%;
@@ -23,5 +25,6 @@
 {% endblock content %}
 {% block javascript %}
   <script src="{% static 'vendor/leaflet/leaflet.js' %}"></script>
+  <script src="{% static 'vendor/js/leaflet-markercluster.js' %}"></script>
   <script src="{% static 'js/claims-map.js' %}"></script>
 {% endblock javascript %}

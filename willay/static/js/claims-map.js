@@ -1,9 +1,11 @@
 var map = L.map('map').setView([-12.0655, -77.0409], 11);
 // centered in Perú
+var markers = L.markerClusterGroup();
 
 L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
+
 
 $(document).ready(function () {
   $.getJSON('/map/data/', function (response) {
@@ -19,6 +21,8 @@ $(document).ready(function () {
     }
     L.geoJSON(response, {
       onEachFeature: onEachFeature,
-    }).addTo(map);
+    }).addTo(markers);
+    map.addLayer(markers);
+    map.fitBounds(markers.getBounds());
   });
 });
