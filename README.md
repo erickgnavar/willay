@@ -9,6 +9,7 @@ App to report issues in a geographic zone
 - Python 3.6
 - Django 2.0
 - Postgres 10
+- Minio for media storage
 
 ## Frontend
 

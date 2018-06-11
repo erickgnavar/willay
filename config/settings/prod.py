@@ -10,6 +10,8 @@ RAVEN_CONFIG = {
     'dsn': os.environ.get('DSN_URL'),  # NOQA
 }
 
+MINIO_STORAGE_USE_HTTPS = True
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -51,5 +53,10 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
+        'minio_storage': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'sentry'],
+            'propagate': False,
+        }
     },
 }
