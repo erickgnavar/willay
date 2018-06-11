@@ -4,6 +4,10 @@ services:
   - name: mdillon/postgis:10-alpine
     alias: postgres
 
+cache:
+  paths:
+    - .cache/
+
 variables:
   POSTGRES_DBNAME: postgres
   POSTGRES_USER: postgres
@@ -14,6 +18,7 @@ variables:
   DB_NAME: postgres
   DB_USER: postgres
   DB_PASSWORD: postgres
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache"
 
 stages:
   - lint
