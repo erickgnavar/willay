@@ -8,6 +8,13 @@ from model_utils.models import TimeStampedModel
 class Category(TimeStampedModel):
 
     name = models.CharField(_('Name'), max_length=50)
+    marker_icon = models.ImageField(
+        _('Marker icon'),
+        upload_to='claims/category/marker_icon/%Y/%m/%d/',
+        null=True,
+        blank=True,
+        help_text=_('32x32 png image is required')
+    )
 
     class Meta:
         verbose_name = _('Category')

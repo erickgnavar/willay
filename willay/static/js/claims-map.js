@@ -19,8 +19,19 @@ $(document).ready(function () {
       compiled = compiled.replace('#content', feature.properties.description);
       layer.bindPopup(compiled);
     }
+
+    function pointToLayer(feature, latlng) {
+      var icon = L.icon({
+        iconUrl: feature.properties.marker_icon,
+      });
+      return L.marker(latlng, {
+        icon: icon,
+      });
+    }
+
     L.geoJSON(response, {
       onEachFeature: onEachFeature,
+      pointToLayer: pointToLayer,
     }).addTo(markers);
     map.addLayer(markers);
     map.fitBounds(markers.getBounds());

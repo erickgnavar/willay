@@ -15,5 +15,12 @@ class Serializer(GeoJSONSerializer):
             'id': obj.id,
             'category_name': obj.category.name,
             'url': reverse('claims:claim-detail', kwargs={'id': obj.id}),
+            'marker_icon': self.category_marker_icon(obj.category),
         })
         return data
+
+    def category_marker_icon(self, category):
+        if category.marker_icon.name:
+            return category.marker_icon.url
+        else:
+            return '/static/vendor/leaflet/images/marker-icon.png'
