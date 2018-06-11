@@ -58,6 +58,9 @@
         </a>
         {% for category in categories %}
         <a href="?category={{ category.id }}" class="list-group-item list-group-item-action {% if request.GET.category == category.id|stringformat:'s' %}active{% endif %}">
+          {% if category.marker_icon.name %}
+          <img alt="" src="{{ category.marker_icon.url }}"/>
+          {% endif %}
           {{ category.name }}
         </a>
         {% endfor %}
