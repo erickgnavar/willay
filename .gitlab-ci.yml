@@ -24,18 +24,19 @@ stages:
   - lint
   - test
 
-before_script:
-  - pip install -r requirements/test.txt
-
-lint_python:
+python_linter:
   stage: lint
+  image: python:3.6
   script:
-    - make lint
+    - pip install poetry
+    - poetry install
+    - poetry run flake8 .
+    - poetry run black --check .
 
-
-test:
+python_test:
   stage: test
   script:
     - apt-get update && apt-get install binutils libproj-dev gdal-bin -y
-    - pip install pytest-django pytest-coverage
-    - pytest --cov
+    - pip install poetry
+    - poetry install
+    - poetry run pytest --cov
