@@ -7,20 +7,20 @@ from model_utils.models import TimeStampedModel
 
 class Category(TimeStampedModel):
 
-    name = models.CharField(_('Name'), max_length=50)
+    name = models.CharField(_("Name"), max_length=50)
     marker_icon = models.ImageField(
-        _('Marker icon'),
-        upload_to='claims/category/marker_icon/%Y/%m/%d/',
+        _("Marker icon"),
+        upload_to="claims/category/marker_icon/%Y/%m/%d/",
         null=True,
         blank=True,
-        help_text=_('32x32 png image is required')
+        help_text=_("32x32 png image is required"),
     )
 
     class Meta:
-        verbose_name = _('Category')
-        verbose_name_plural = _('Categories')
-        default_related_name = 'categories'
-        ordering = ('name',)
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+        default_related_name = "categories"
+        ordering = ("name",)
 
     def __str__(self):
         return self.name
@@ -28,31 +28,25 @@ class Category(TimeStampedModel):
 
 class Claim(TimeStampedModel, models.Model):
 
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    category = models.ForeignKey("Category", on_delete=models.CASCADE)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL,
     )
 
-    address = models.CharField(_('Address'), max_length=200)
-    point = models.PointField(_('Point'), null=True, blank=True)
-    date = models.DateTimeField(_('Date'), default=timezone.now)
-    description = models.TextField(_('Description'))
+    address = models.CharField(_("Address"), max_length=200)
+    point = models.PointField(_("Point"), null=True, blank=True)
+    date = models.DateTimeField(_("Date"), default=timezone.now)
+    description = models.TextField(_("Description"))
     photo = models.ImageField(
-        _('Photo'),
-        upload_to='claims/claim/photo/%Y/%m/%d/',
-        null=True,
-        blank=True,
+        _("Photo"), upload_to="claims/claim/photo/%Y/%m/%d/", null=True, blank=True,
     )
-    verified = models.BooleanField(_('Verified'), default=False)
+    verified = models.BooleanField(_("Verified"), default=False)
 
     class Meta:
-        verbose_name = _('Claim')
-        verbose_name_plural = _('Claims')
-        default_related_name = 'claims'
-        ordering = ('-date',)
+        verbose_name = _("Claim")
+        verbose_name_plural = _("Claims")
+        default_related_name = "claims"
+        ordering = ("-date",)
 
     def __str__(self):
-        return f'{self.address} - {self.date}'
+        return f"{self.address} - {self.date}"

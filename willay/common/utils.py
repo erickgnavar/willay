@@ -4,7 +4,6 @@ from django.template import loader
 
 
 class Email(object):
-
     @staticmethod
     def send_mail(*args, **kwargs):
         """
@@ -19,20 +18,22 @@ class Email(object):
         Raise:
             TemplateDoesNotExist
         """
-        subject = kwargs.get('subject')
-        from_email = kwargs.get('from_email', settings.DEFAULT_FROM_EMAIL)
-        to = kwargs.get('to')
-        body = kwargs.get('body', '')
-        attachments = kwargs.get('attachments', [])
+        subject = kwargs.get("subject")
+        from_email = kwargs.get("from_email", settings.DEFAULT_FROM_EMAIL)
+        to = kwargs.get("to")
+        body = kwargs.get("body", "")
+        attachments = kwargs.get("attachments", [])
 
-        plain = kwargs.get('plain', False)
+        plain = kwargs.get("plain", False)
 
         if plain:
             message = EmailMessage(subject, body, from_email, to)
         else:
-            context = kwargs.get('context', {})
-            template = loader.get_template(kwargs.get('template_name'))
+            context = kwargs.get("context", {})
+            template = loader.get_template(kwargs.get("template_name"))
             html_content = template.render(context)
-            message = EmailMultiAlternatives(subject, html_content, from_email, to, attachments=attachments)
-            message.content_subtype = 'html'
+            message = EmailMultiAlternatives(
+                subject, html_content, from_email, to, attachments=attachments
+            )
+            message.content_subtype = "html"
         message.send(fail_silently=not settings.DEBUG)

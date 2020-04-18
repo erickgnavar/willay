@@ -17,13 +17,13 @@ from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import include, path
 
-admin.site.site_title = 'Willay'
-admin.site.site_header = 'Willay'
+admin.site.site_title = "Willay"
+admin.site.site_header = "Willay"
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
-    path('', include('willay.users.urls', namespace='auth')),
-    path('', include('willay.claims.urls', namespace='claims')),
-    path('', lambda req: redirect('claims:claim-map'), name='home'),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("allauth.urls")),
+    path("", include("willay.users.urls", namespace="auth")),
+    path("", include("willay.claims.urls", namespace="claims")),
+    path("", lambda req: redirect("claims:claim-map"), name="home"),
 ]

@@ -4,7 +4,6 @@ from ..models import User
 
 
 class UserTestCase(TestCase):
-
     def test_str(self):
-        user = User(username='test')
-        self.assertEqual(str(user), 'test')
+        user = User(username="test")
+        self.assertEqual(str(user), "test")
